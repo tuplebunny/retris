@@ -20,7 +20,7 @@ class GameWindow < Gosu::Window
     @docked_sound = Gosu::Sample.new(self, 'media/docking.wav')
     @line_clear_sound = Gosu::Sample.new(self, 'media/clear-line.wav')
     @rotate_sound = Gosu::Sample.new(self, 'media/rotate.wav')
-    @score_3 = Gosu::Song.new(self, 'media/score-3.mp3')
+    @score_3 = Gosu::Song.new(self, 'media/score-1.mp3')
     @score_3.volume = 0.5
     @score_3.play
   end
