@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'gosu'
 require 'init'
-require 'pp'
+
 
 class GameWindow < Gosu::Window
   
@@ -9,7 +9,14 @@ class GameWindow < Gosu::Window
     super(600, 600, false)
     self.caption = "Retris"
     
-    Audible.bootstrap(self)
+    StateMachine::Base.bootstrap(self)
+    @state = StateMachine::Base.initial_state
+  end
+  
+  def bootstrap
+    puts "About to require files..."
+    required_files.each { |file| require(file) }
+    
     @background = Gosu::Image.new(self, 'media/bg.png', true)
     Block.bootstrap(self)
     @grid = Grid.new(:columns => 10, :rows => 20)
@@ -24,9 +31,12 @@ class GameWindow < Gosu::Window
     @score_3 = Gosu::Sample.new(self, 'media/score-1.mp3')
     @score_instance = @score_3.play(0.5)
     @crash = Gosu::Sample.new(self, 'media/crash.mp3')
+    puts "Done!"
   end
 
   def update
+    return
+    
     unless Tetris.player_lost?    
       if Tetris.docked?(:grid => @grid, :cursor => @cursor)
         if @cursor.top?
@@ -97,10 +107,14 @@ class GameWindow < Gosu::Window
   end
 
   def draw
-    @background.draw(0, 0, 0)
-    @grid.draw
-    @cursor.draw
-    @score.draw_rel(Tetris.score.to_s.rjust(6, '0'), 425, 100, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
+    unless loaded?
+      @loading_bg.draw(0, 0, 0)
+    else
+      @background.draw(0, 0, 0)
+      @grid.draw
+      @cursor.draw
+      @score.draw_rel(Tetris.score.to_s.rjust(6, '0'), 425, 100, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
+    end
   end
   
   def button_down(id)
@@ -134,7 +148,28 @@ class GameWindow < Gosu::Window
     @lock_left or @lock_right or @lock_down or @lock_up or false
   end
   
+  protected
+  
+    def loaded?
+      false
+    end
+  
+    def required_files
+      %w{
+        row
+        location
+        shape_location
+        grid_location
+        block
+        shape
+        grid
+        cursor
+        tetris
+      }
+    end
+  
 end
 
 window = GameWindow.new
+# window.bootstrap
 window.show
