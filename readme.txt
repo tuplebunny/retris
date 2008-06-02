@@ -1,23 +1,10 @@
 == To-do
 
-1. Automatic downward motion of shapes (done)
-2. Delay before dock (done)
-3. Line clearing (done)
-4. Score keeping (done)
-5. Loss condition
-6. Force downward motion by holding down (done)
-7. Force new shape creation by pushing down when docked (done)
-8. Next shape
-9. Sounds! (done)
-10. Remaining shapes (done, but I've either got the rotations wrong or the game is rotating twice)
-11. Change background music?
-12. Menu?
-13. High scores?
-14. Pause feature
-
-== Bugs
-
-1. Shape makes rotation sound even if it doesn't rotate. This is best fixed by
-making the Shape object responsible for making its own noises. Same with all other
-objects.
-2. Not a bug in my game, but the volume method on Song doesn't seem to work.
+1. Refactor sounds into a SoundForge class.
+2. Create a mechanism to handle the game's varying states (e.g. menu, playing, loss).
+3. Allow player to change background music.
+4. Implement difficult levels.
+5. Add more shape colors and ensure that every shape's color is unique.
+6. Create a menu to allow players to start a game or quit.
+7. Allow players to pause their current game.
+8. Allow players to exit their current game.
