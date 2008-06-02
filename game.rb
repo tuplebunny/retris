@@ -20,68 +20,79 @@ class GameWindow < Gosu::Window
     @docked_sound = Gosu::Sample.new(self, 'media/docking.wav')
     @line_clear_sound = Gosu::Sample.new(self, 'media/clear-line.wav')
     @rotate_sound = Gosu::Sample.new(self, 'media/rotate.wav')
-    @score_3 = Gosu::Song.new(self, 'media/score-1.mp3')
-    @score_3.volume = 0.5
-    @score_3.play
+    @score_3 = Gosu::Sample.new(self, 'media/score-1.mp3')
+    @score_instance = @score_3.play(0.5)
+    @crash = Gosu::Sample.new(self, 'media/crash.mp3')
   end
 
   def update
-    if Tetris.docked?(:grid => @grid, :cursor => @cursor)
-      @docked_time ||= Gosu::milliseconds
+    unless Tetris.player_lost?    
+      if Tetris.docked?(:grid => @grid, :cursor => @cursor)
+        if @cursor.top?
+          Tetris.player_lost
+          @score_instance.stop
+          @crash.play
+          return
+        end
       
-      if Gosu::milliseconds > @docked_time + 1000 # or button_down?(Gosu::Button::KbDown) # Force dock?
-        @last_automatic_downward_motion = nil
-        Tetris.assimilate(:grid => @grid, :cursor => @cursor)
-        @docked_sound.play
-        @cursor = Cursor.new(:shape => Shape.random, :location => @grid.cursor_origin)
+        @docked_time ||= Gosu::milliseconds
+      
+        if Gosu::milliseconds > @docked_time + 1000 # or button_down?(Gosu::Button::KbDown) # Force dock?
+          @last_automatic_downward_motion = nil
+          Tetris.assimilate(:grid => @grid, :cursor => @cursor)
+          @docked_sound.play
+          @cursor = Cursor.new(:shape => Shape.random, :location => @grid.cursor_origin)
+        end
+      else
+        @docked_time = nil
       end
+    
+      @rows = @grid.completed_rows.size
+    
+      unless @rows.zero?
+        Tetris.add_to_score(@rows)
+        @line_clear_sound.play
+        @grid.clear_completed_rows
+      end
+    
+      @last_automatic_downward_motion ||= Gosu::milliseconds
+    
+      # Gradually move the shape downward.
+      if Gosu::milliseconds > @last_automatic_downward_motion + 1000
+        puts "Moving it down!"
+        @cursor.move_down if Tetris.valid_position?(:cursor => @cursor.pretend.move_down, :grid => @grid)
+        @last_automatic_downward_motion = nil
+      end
+    
+      if button_down?(Gosu::Button::KbLeft)
+        return if key_locked?
+        lock_left
+        @cursor.move_left if Tetris.valid_position?(:cursor => @cursor.pretend.move_left, :grid => @grid)
+      end
+    
+      if button_down?(Gosu::Button::KbRight)
+        return if key_locked?
+        lock_right
+        @cursor.move_right if Tetris.valid_position?(:cursor => @cursor.pretend.move_right, :grid => @grid)
+      end
+    
+      if button_down?(Gosu::Button::KbDown)
+        @cursor.move_down if Tetris.valid_position?(:cursor => @cursor.pretend.move_down, :grid => @grid)
+        @last_automatic_downward_motion = Gosu::milliseconds
+      end
+    
+      if button_down?(Gosu::Button::KbUp)
+        return if key_locked?
+        lock_up
+        @cursor.rotate_clockwise if Tetris.valid_position?(:cursor => @cursor.pretend.rotate_clockwise, :grid => @grid)
+        @rotate_sound.play(0.5)
+      end
+    
+      @grid.reset_row_objects
+      @score_3.play(0.5) unless @score_instance.playing?
     else
-      @docked_time = nil
+      
     end
-    
-    @rows = @grid.completed_rows.size
-    
-    unless @rows.zero?
-      Tetris.add_to_score(@rows)
-      @line_clear_sound.play
-      @grid.clear_completed_rows
-    end
-    
-    @last_automatic_downward_motion ||= Gosu::milliseconds
-    
-    # Gradually move the shape downward.
-    if Gosu::milliseconds > @last_automatic_downward_motion + 1000
-      puts "Moving it down!"
-      @cursor.move_down if Tetris.valid_position?(:cursor => @cursor.pretend.move_down, :grid => @grid)
-      @last_automatic_downward_motion = nil
-    end
-    
-    if button_down?(Gosu::Button::KbLeft)
-      return if key_locked?
-      lock_left
-      @cursor.move_left if Tetris.valid_position?(:cursor => @cursor.pretend.move_left, :grid => @grid)
-    end
-    
-    if button_down?(Gosu::Button::KbRight)
-      return if key_locked?
-      lock_right
-      @cursor.move_right if Tetris.valid_position?(:cursor => @cursor.pretend.move_right, :grid => @grid)
-    end
-    
-    if button_down?(Gosu::Button::KbDown)
-      @cursor.move_down if Tetris.valid_position?(:cursor => @cursor.pretend.move_down, :grid => @grid)
-      @last_automatic_downward_motion = Gosu::milliseconds
-    end
-    
-    if button_down?(Gosu::Button::KbUp)
-      return if key_locked?
-      lock_up
-      @cursor.rotate_clockwise if Tetris.valid_position?(:cursor => @cursor.pretend.rotate_clockwise, :grid => @grid)
-      @rotate_sound.play(0.5)
-    end
-    
-    @grid.reset_row_objects
-    @score_3.play unless @score_3.playing?
   end
 
   def draw

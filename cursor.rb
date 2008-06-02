@@ -6,6 +6,10 @@ class Cursor
     @location, @shape = options[:location], options[:shape]
   end
   
+  def top?
+    @location.row == 0
+  end
+  
   def locations
     @shape.locations(@location)
   end

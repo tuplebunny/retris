@@ -72,4 +72,16 @@ class Tetris
     score
   end
   
+  def self.player_lost
+    @player_lost = true
+  end
+  
+  def self.end_game
+    
+  end
+  
+  def self.player_lost?
+    !!@player_lost
+  end
+  
 end
