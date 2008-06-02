@@ -25,6 +25,7 @@ module Audible
     attr_reader :samples
 
     def sample(options)
+      puts "gosu window is: #{ @gosu_window }"
       @samples ||= Hash.new
       @samples[options[:name]] = Gosu::Sample.new(@gosu_window, options[:filename])
     end
