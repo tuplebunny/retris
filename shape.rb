@@ -21,6 +21,18 @@ class Shape
     shapes.randomize.randomize.randomize.first.dup
   end
   
+  def self.colors
+    @colors ||= [
+      0xFF00FFFF, # turqoise
+      0xFFDC143C, # crimson
+      0xFFADFF2F, # lime green
+      0xFFFFD700, # gold
+      0xFF8A2BE2, # blue violet
+      0xFFFF4500, # orange red
+      0xFFF5F5F5  # white smoke
+    ].randomize
+  end
+  
   
   
   attr_accessor :orientation
@@ -75,18 +87,8 @@ class Shape
       end
     end
     
-    def colors
-      @colors ||= [
-        0xFF00FFFF, # turqoise
-        0xFFDC143C, # crimson
-        0xFFADFF2F, # lime green
-        0xFFFFD700  # gold
-      ].randomize
-    end
-    
     def random_color
-      puts "A random color was taken"
-      colors.shift
+      self.class.colors.shift
     end
   
 end
