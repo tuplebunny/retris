@@ -41,15 +41,15 @@ class InitialState < StateMachine
   
     def required_files
       %w{
-        row
-        location
-        shape_location
-        grid_location
-        block
-        shape
-        grid
-        cursor
-        tetris
+        objects/row
+        objects/location
+        objects/shape_location
+        objects/grid_location
+        objects/block
+        objects/shape
+        objects/grid
+        objects/cursor
+        objects/tetris
       }
     end
   
