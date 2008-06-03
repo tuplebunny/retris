@@ -1,5 +1,9 @@
 class Grid
   
+  include Audible
+  
+  sample :name => :clear_lines, :filename => 'media/clear-line.wav'
+  
   def initialize(options)
     @rows, @columns = options[:rows], options[:columns]
   end
@@ -31,6 +35,7 @@ class Grid
   end
   
   def clear_completed_rows
+    play_sample(:clear_lines)
     completed_row_count = completed_rows.size
     highest_row_cleared_index = completed_rows.first.index
     completed_rows.each { |completed_row| completed_row.clear }

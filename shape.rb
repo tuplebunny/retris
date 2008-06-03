@@ -2,8 +2,6 @@ class Shape
   
   include Audible
   
-  puts "Inside shape definition, gosu is: #{ @gosu_window }"
-  
   sample :name => :rotate, :filename => 'media/rotate.wav'
   
   # Read the shapes/ directory and create a collection of instances. Each file

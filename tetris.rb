@@ -1,12 +1,17 @@
 class Tetris
   
-  def self.valid_position?(options)
+  include Audible
+  
+  sample :name => :dock, :filename => 'media/docking.wav'
+  sample :name => :crash, :filename => 'media/crash.mp3'
+  
+  def valid_position?(options)
     return false if out_of_bounds?(options)
     return false if blocks_overlap?(options)
     true
   end
   
-  def self.docked?(options)
+  def docked?(options)
     if valid_position?(:grid => options[:grid], :cursor => options[:cursor].pretend.move_down)
       false
     else
@@ -14,7 +19,8 @@ class Tetris
     end
   end
   
-  def self.assimilate(options)
+  def assimilate(options)
+    play_sample(:dock)
     grid, cursor = options[:grid], options[:cursor]
     
     cursor.locations.each do |cursor_location|
@@ -28,7 +34,7 @@ class Tetris
   # have a shape that is trying to sit on top of an already-occupied
   # location.
   #
-  def self.blocks_overlap?(options)
+  def blocks_overlap?(options)
     grid, cursor = options[:grid], options[:cursor]
     
     cursor.locations.any? do |cursor_location|
@@ -41,7 +47,7 @@ class Tetris
   # Are all shape locations present in grid? If not we have a shape who is
   # trying to move outside the boundaries of the grid.
   #
-  def self.out_of_bounds?(options)
+  def out_of_bounds?(options)
     grid, cursor = options[:grid], options[:cursor]
     
     cursor.locations.any? do |cursor_location|
@@ -49,16 +55,16 @@ class Tetris
     end
   end
   
-  def self.add_to_score(lines)
+  def add_to_score(lines)
     self.lines[lines] ||= 0
     self.lines[lines] += 1
   end
   
-  def self.lines
+  def lines
     @lines ||= Hash.new
   end
   
-  def self.score
+  def score
     score = 0
     
     lines.each do |combo, times|
@@ -72,15 +78,16 @@ class Tetris
     score
   end
   
-  def self.player_lost
+  def player_lost
+    play_sample(:crash)
     @player_lost = true
   end
   
-  def self.end_game
+  def end_game
     
   end
   
-  def self.player_lost?
+  def player_lost?
     !!@player_lost
   end
   

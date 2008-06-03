@@ -1,19 +1,23 @@
-module StateMachine
-  class Base
-    
-    include Gosu
-    
-    def self.bootstrap(game_window)
-      @@game_window = game_window
-    end
-    
-    def self.initial_state
-      Loading.new
-    end
-    
-    def game_window
-      @@game_window
-    end
-    
+class StateMachine
+  
+  attr_accessor :base
+  
+  include Gosu
+  
+  def initialize(base)
+    self.base = base
   end
+  
+  def update
+  end
+  
+  def draw
+  end
+  
+  def button_down(id)
+  end
+  
+  def button_up(id)
+  end
+    
 end
