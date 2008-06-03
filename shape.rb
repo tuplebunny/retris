@@ -4,7 +4,7 @@ class Shape
   
   puts "Inside shape definition, gosu is: #{ @gosu_window }"
   
-  sample :name => :rotate, :filename => 'media/rotate.wav'
+  # sample :name => :rotate, :filename => 'media/rotate.wav'
   
   # Read the shapes/ directory and create a collection of instances. Each file
   # represents one shape and should contain four orientation definitions.
@@ -42,7 +42,7 @@ class Shape
   
   def rotate_clockwise
     @orientation = orientations.next_index
-    play_sample(:rotate)
+    # play_sample(:rotate)
   end
   
   def rotate_counter_clockwise

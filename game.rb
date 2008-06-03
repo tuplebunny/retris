@@ -9,7 +9,6 @@ class GameWindow < Gosu::Window
     super(600, 600, false)
     self.caption = "Retris"
     
-    Audible.bootstrap(self)
     @background = Gosu::Image.new(self, 'media/bg.png', true)
     Block.bootstrap(self)
     @grid = Grid.new(:columns => 10, :rows => 20)
@@ -86,7 +85,7 @@ class GameWindow < Gosu::Window
         return if key_locked?
         lock_up
         @cursor.rotate_clockwise if Tetris.valid_position?(:cursor => @cursor.pretend.rotate_clockwise, :grid => @grid)
-        # @rotate_sound.play(0.5)
+        @rotate_sound.play(0.5)
       end
     
       @grid.reset_row_objects
