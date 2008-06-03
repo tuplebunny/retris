@@ -8,7 +8,7 @@ class PlayingState < StateMachine
     @background = base.game_objects[:background]
     @score = base.game_objects[:score]
     @tetris = base.game_objects[:tetris]
-    @song = Gosu::Sample.new(base, 'media/clear-line.wav')
+    @song = Gosu::Sample.new(base, 'media/score-2.mp3')
     @song_instance = @song.play
   end
   
@@ -70,8 +70,12 @@ class PlayingState < StateMachine
       end
     
       unless @song_instance.playing?
-        3.times { @song_instance.stop }
-        @song.play
+        @delay_before_replay ||= Gosu::milliseconds
+        
+        if Gosu::milliseconds > @delay_before_replay + 3000
+          @delay_before_replay = nil
+          @song_instance = @song.play
+        end
       end
       
       @grid.reset_row_objects
