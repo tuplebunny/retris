@@ -2,13 +2,7 @@ class Shape
   
   include Audible
   
-<<<<<<< HEAD:shape.rb
   sample :name => :rotate, :filename => 'media/rotate.wav'
-=======
-  puts "Inside shape definition, gosu is: #{ @gosu_window }"
-  
-  # sample :name => :rotate, :filename => 'media/rotate.wav'
->>>>>>> master:shape.rb
   
   # Read the shapes/ directory and create a collection of instances. Each file
   # represents one shape and should contain four orientation definitions.

@@ -6,25 +6,10 @@ class GameWindow < Gosu::Window
     super(600, 600, false)
     self.caption = "Retris"
     
-<<<<<<< HEAD:scrap.rb
+
     StateMachine::Base.bootstrap(self)
     @state = StateMachine::Base.initial_state
-=======
-    @background = Gosu::Image.new(self, 'media/bg.png', true)
-    Block.bootstrap(self)
-    @grid = Grid.new(:columns => 10, :rows => 20)
-    Shape.bootstrap
-    @cursor = Cursor.new(:shape => Shape.random, :location => @grid.cursor_origin)
-    GridLocation.load_block(self)
-    # @score = Gosu::Font.new(self, 'media/mizufalp.ttf', 39) # Font renders ugly as hell, unfortunately...
-    @score = Gosu::Font.new(self, Gosu::default_font_name, 40)
-    @docked_sound = Gosu::Sample.new(self, 'media/docking.wav')
-    @line_clear_sound = Gosu::Sample.new(self, 'media/clear-line.wav')
-    @rotate_sound = Gosu::Sample.new(self, 'media/rotate.wav')
-    @score_3 = Gosu::Sample.new(self, 'media/score-1.mp3')
-    @score_instance = @score_3.play(0.5)
-    @crash = Gosu::Sample.new(self, 'media/crash.mp3')
->>>>>>> master:game.rb
+
   end
 
   def update
