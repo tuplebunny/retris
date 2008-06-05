@@ -17,6 +17,7 @@ class PlayingState < StateMachine
       if @tetris.docked?(:grid => @grid, :cursor => @cursor)
         if @cursor.top?
           @tetris.player_lost
+          @song_instance.stop
           return
         end
       
@@ -69,7 +70,7 @@ class PlayingState < StateMachine
         @cursor.rotate_clockwise if @tetris.valid_position?(:cursor => @cursor.pretend.rotate_clockwise, :grid => @grid)
       end
     
-      unless @song_instance.playing?
+      unless @tetris.player_lost? or @song_instance.playing?
         @delay_before_replay ||= Gosu::milliseconds
         
         if Gosu::milliseconds > @delay_before_replay + 3000
