@@ -5,3 +5,4 @@
 3. Create a menu to allow players to start a game or quit.
 4. Allow players to pause their current game.
 5. Allow players to exit their current game.
+6. GET RSPEC TO WORK

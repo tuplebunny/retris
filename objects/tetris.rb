@@ -78,17 +78,33 @@ class Tetris
     score
   end
   
+  def total_lines
+    lines.inject(0) { |sum, key_value_array| sum + (key_value_array.first * key_value_array.last) }
+  end
+  
   def player_lost
     play_sample(:crash)
     @player_lost = true
   end
   
   def end_game
-    
   end
   
   def player_lost?
     !!@player_lost
+  end
+  
+  def difficulty_level
+    total_lines.divmod(10).first
+  end
+  
+  def drop_rate
+    drop_rate = 2000 - (difficulty_level * 90)
+    if drop_rate >= 1800
+      200
+    else
+      drop_rate
+    end
   end
   
 end

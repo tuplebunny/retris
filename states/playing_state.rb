@@ -41,7 +41,7 @@ class PlayingState < StateMachine
       @last_automatic_downward_motion ||= Gosu::milliseconds
     
       # Gradually move the shape downward.
-      if Gosu::milliseconds > @last_automatic_downward_motion + 1000
+      if Gosu::milliseconds > @last_automatic_downward_motion + @tetris.drop_rate
         @cursor.move_down if @tetris.valid_position?(:cursor => @cursor.pretend.move_down, :grid => @grid)
         @last_automatic_downward_motion = nil
       end
