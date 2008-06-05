@@ -99,12 +99,8 @@ class Tetris
   end
   
   def drop_rate
+    return 200 if difficulty_level >= 19
     drop_rate = 2000 - (difficulty_level * 90)
-    if drop_rate >= 1800
-      200
-    else
-      drop_rate
-    end
   end
   
 end
