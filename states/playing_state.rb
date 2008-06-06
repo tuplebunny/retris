@@ -13,7 +13,7 @@ class PlayingState < StateMachine
     @current_difficult_level = Gosu::Font.new(base, Gosu::default_font_name, 40)
   end
   
-  def update    
+  def update
     unless @tetris.player_lost?
       if @tetris.docked?(:grid => @grid, :cursor => @cursor)
         if @cursor.top?
@@ -24,10 +24,11 @@ class PlayingState < StateMachine
       
         @docked_time ||= Gosu::milliseconds
       
-        if Gosu::milliseconds > @docked_time + 1000 # or base.button_down?(Gosu::Button::KbDown) # Force dock?
+        if (Gosu::milliseconds > @docked_time + 1000) or (base.button_down?(Gosu::Button::KbDown) and Gosu::milliseconds > @docked_time + 500) # Force dock
           @last_automatic_downward_motion = nil
           @tetris.assimilate(:grid => @grid, :cursor => @cursor)
-          @cursor = Cursor.new(:shape => Shape.random, :location => @grid.cursor_origin)
+          @cursor = Cursor.new(:shape => base.game_objects[:next_shape], :location => @grid.cursor_origin)
+          base.game_objects[:next_shape] = Shape.random
         end
       else
         @docked_time = nil
@@ -92,6 +93,7 @@ class PlayingState < StateMachine
     @cursor.draw
     @score.draw_rel(@tetris.score.to_s.rjust(6, '0'), 440, 250, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
     @current_difficult_level.draw_rel(@tetris.difficulty_level.to_s, 440, 390, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
+    # base.game_objects[:next_shape].draw(425, 100, 10)
   end
   
   def button_down(id)

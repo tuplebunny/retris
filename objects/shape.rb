@@ -18,7 +18,7 @@ class Shape
   end
   
   def self.random
-    shapes.randomize.randomize.randomize.first.dup
+    shapes.randomize.first.dup
   end
   
   def self.colors
@@ -50,9 +50,13 @@ class Shape
     @orientations = old_shape.orientations.dup
   end
   
+  def draw_arbitrary
+    locations.each { |location| location.draw_arbitrary }
+  end
+  
   def rotate_clockwise
     @orientation = orientations.next_index
-    # play_sample(:rotate)
+    play_sample(:rotate)
   end
   
   def rotate_counter_clockwise

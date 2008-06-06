@@ -18,6 +18,7 @@ class InitialState < StateMachine
       base.game_objects[:background] = Gosu::Image.new(base, 'media/bg.png', true)
       base.game_objects[:grid] = Grid.new(:columns => 10, :rows => 20)
       base.game_objects[:cursor] = Cursor.new(:shape => Shape.random, :location => base.game_objects[:grid].cursor_origin)
+      base.game_objects[:next_shape] = Shape.random
       base.game_objects[:score] = Gosu::Font.new(base, Gosu::default_font_name, 40)
       base.game_objects[:tetris] = Tetris.new
     
