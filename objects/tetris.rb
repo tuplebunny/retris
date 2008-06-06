@@ -95,11 +95,11 @@ class Tetris
   end
   
   def difficulty_level
-    total_lines.divmod(10).first
+    total_lines.divmod(10).first + 1
   end
   
   def drop_rate
-    return 200 if difficulty_level >= 19
+    return 200 if difficulty_level >= 20
     drop_rate = 2000 - (difficulty_level * 90)
   end
   
