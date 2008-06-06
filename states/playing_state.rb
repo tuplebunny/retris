@@ -10,6 +10,7 @@ class PlayingState < StateMachine
     @tetris = base.game_objects[:tetris]
     @song = Gosu::Sample.new(base, 'media/score-2.mp3')
     @song_instance = @song.play
+    @current_difficult_level = Gosu::Font.new(base, Gosu::default_font_name, 40)
   end
   
   def update    
@@ -73,7 +74,7 @@ class PlayingState < StateMachine
       unless @tetris.player_lost? or @song_instance.playing?
         @delay_before_replay ||= Gosu::milliseconds
         
-        if Gosu::milliseconds > @delay_before_replay + 3000
+        if Gosu::milliseconds > @delay_before_replay + 1000
           @delay_before_replay = nil
           @song_instance = @song.play
         end
@@ -89,7 +90,7 @@ class PlayingState < StateMachine
     @background.draw(0, 0, 0)
     @grid.draw
     @cursor.draw
-    @score.draw_rel(@tetris.score.to_s.rjust(6, '0'), 425, 100, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
+    @score.draw_rel(@tetris.score.to_s.rjust(6, '0'), 440, 250, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
   end
   
   def button_down(id)
