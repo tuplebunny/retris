@@ -93,7 +93,7 @@ class PlayingState < StateMachine
     @cursor.draw
     @score.draw_rel(@tetris.score.to_s.rjust(6, '0'), 440, 250, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
     @current_difficult_level.draw_rel(@tetris.difficulty_level.to_s, 440, 390, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
-    # base.game_objects[:next_shape].draw(425, 100, 10)
+    base.game_objects[:next_shape].draw
   end
   
   def button_down(id)

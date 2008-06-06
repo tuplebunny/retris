@@ -50,8 +50,8 @@ class Shape
     @orientations = old_shape.orientations.dup
   end
   
-  def draw_arbitrary
-    locations.each { |location| location.draw_arbitrary }
+  def draw
+    locations(Location.new(:column => 14, :row => 2)).each { |location| location.draw }
   end
   
   def rotate_clockwise
