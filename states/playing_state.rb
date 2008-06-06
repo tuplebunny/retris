@@ -11,9 +11,28 @@ class PlayingState < StateMachine
     @song = Gosu::Sample.new(base, 'media/score-2.mp3')
     @song_instance = @song.play
     @current_difficult_level = Gosu::Font.new(base, Gosu::default_font_name, 40)
+    @pause_overlay = base.game_objects[:pause_overlay]
+    @paused = false
   end
   
   def update
+    if base.button_down?(Gosu::Button::KbSpace)
+      @time_since_pause ||= Gosu::milliseconds
+      return unless @time_since_pause + 100 < Gosu::milliseconds
+      
+      if @paused
+        @paused = false
+        @song_instance.volume = 1
+      else
+        @paused = true
+        @song_instance.volume = 0.1
+      end
+      
+      @time_since_pause = nil
+    end
+    
+    return if @paused
+    
     unless @tetris.player_lost?
       if @tetris.docked?(:grid => @grid, :cursor => @cursor)
         if @cursor.top?
@@ -94,6 +113,7 @@ class PlayingState < StateMachine
     @score.draw_rel(@tetris.score.to_s.rjust(6, '0'), 440, 250, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
     @current_difficult_level.draw_rel(@tetris.difficulty_level.to_s, 440, 390, 1, 0.5, 0.5, 1, 1, 0xffffffff, :default)
     base.game_objects[:next_shape].draw
+    @pause_overlay.draw(10, 10, 20) if @paused
   end
   
   def button_down(id)

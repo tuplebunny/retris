@@ -16,6 +16,7 @@ class InitialState < StateMachine
       Shape.bootstrap
 
       base.game_objects[:background] = Gosu::Image.new(base, 'media/bg.png', true)
+      base.game_objects[:pause_overlay] = Gosu::Image.new(base, 'media/paused-overlay.png', true)
       base.game_objects[:grid] = Grid.new(:columns => 10, :rows => 20)
       base.game_objects[:cursor] = Cursor.new(:shape => Shape.random, :location => base.game_objects[:grid].cursor_origin)
       base.game_objects[:next_shape] = Shape.random
