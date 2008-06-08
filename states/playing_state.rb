@@ -117,7 +117,7 @@ class PlayingState < StateMachine
   end
   
   def button_down(id)
-    close if id == Gosu::Button::KbEscape
+    base.close if id == Gosu::Button::KbEscape
   end
   
   def button_up(id)
